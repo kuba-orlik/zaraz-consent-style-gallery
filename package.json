@@ -1,19 +1,30 @@
 {
-  "name": "zaraz-consent-style-gallery",
-  "version": "0.0.0",
-  "private": true,
-  "scripts": {
-    "deploy": "wrangler deploy",
-    "dev": "wrangler dev",
-    "start": "wrangler dev",
-    "test": "vitest",
-    "cf-typegen": "wrangler types"
-  },
-  "devDependencies": {
-    "@cloudflare/vitest-pool-workers": "^0.5.2",
-    "@cloudflare/workers-types": "^4.20241112.0",
-    "typescript": "^5.5.2",
-    "vitest": "2.0.5",
-    "wrangler": "^3.60.3"
-  }
+	"name": "zaraz-consent-style-gallery",
+	"version": "0.0.0",
+	"private": true,
+	"scripts": {
+		"predeploy": "npm run build",
+		"deploy": "wrangler deploy",
+		"build": "node build.mjs",
+		"watch": "node build.mjs --watch",
+		"predev": "npm run build",
+		"dev": "wrangler dev",
+		"start": "wrangler dev",
+		"test": "vitest",
+		"cf-typegen": "wrangler types"
+	},
+	"devDependencies": {
+		"@cloudflare/vitest-pool-workers": "^0.5.2",
+		"@cloudflare/workers-types": "^4.20241112.0",
+		"esbuild": "^0.24.0",
+		"tiny-glob": "^0.2.9",
+		"typescript": "^5.5.2",
+		"vitest": "2.0.5",
+		"wrangler": "^3.60.3"
+	},
+	"dependencies": {
+		"cloudworker-router": "^4.1.5",
+		"monaco-editor": "^0.52.0",
+		"tempstream": "^0.4.5"
+	}
 }
