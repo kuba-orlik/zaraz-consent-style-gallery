@@ -3,6 +3,7 @@ import { TempstreamJSX } from 'tempstream'
 import { HTMLResponse } from './html'
 import { getStyles, Style } from './styles.js'
 import makeConsentModal from './generate-consent'
+import makeIframe from './make-iframe'
 
 export interface Env {
 	// If you set another name in wrangler.toml as the value for 'binding',
@@ -33,10 +34,12 @@ function navigation(styles: Style[], picked_style?: number) {
 
 function editor(content: string) {
 	return (
-		<div id="editor" style="height: 200px;">
-			<script class="content" type="text">
-				{content}
-			</script>
+		<div
+			data-controller="monaco"
+			data-monaco-preview-outlet="#preview"
+			style="height: 200px;"
+		>
+			<textarea data-monaco-target="content">{content}</textarea>
 		</div>
 	)
 }
@@ -58,7 +61,10 @@ router.get('/:id', async (context) => {
 			<div>
 				{navigation(styles, Number(context.params.id))}
 				{editor(active_style?.css || '')}
-				{makeConsentModal()}
+				{makeIframe(
+					{ id: 'preview', 'data-controller': 'preview' },
+					await makeConsentModal(active_style?.css),
+				)}
 			</div>
 		),
 		activeCustomStyle: `.fake-consent-modal-container {${active_style?.css}}`,
