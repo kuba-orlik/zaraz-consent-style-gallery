@@ -20,7 +20,7 @@
 		"tiny-glob": "^0.2.9",
 		"typescript": "^5.5.2",
 		"vitest": "2.0.5",
-		"wrangler": "^3.60.3"
+		"wrangler": "3.92"
 	},
 	"dependencies": {
 		"@hotwired/stimulus": "^3.2.2",

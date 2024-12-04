@@ -26,6 +26,12 @@ export class MonacoController extends Controller<HTMLDivElement> {
 			this.editor = monaco.editor.create(this.element, {
 				value: this.contentTarget.innerHTML,
 				language: 'css',
+				minimap: { enabled: false },
+				glyphMargin: false,
+				folding: false,
+				lineNumbers: 'off',
+				lineDecorationsWidth: 0,
+				lineNumbersMinChars: 0,
 			})
 			this.editor.onDidChangeModelContent((event) => {
 				const style = this.editor?.getValue() || ''
