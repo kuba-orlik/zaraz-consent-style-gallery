@@ -29,11 +29,13 @@ async function smallPreview({
 	id,
 	css,
 	active,
+	target_frame = '_top',
 }: {
 	name: string
 	id: number
 	css: string
 	active: boolean
+	target_frame?: string
 }) {
 	const content = (
 		<>
@@ -55,22 +57,33 @@ async function smallPreview({
 		<a
 			class={['small-preview', { active }]}
 			href={`/${id}`}
-			data-turbo-frame="preview-editor"
+			data-turbo-frame={target_frame}
 			data-turbo-action="advance"
-			onclick="document.querySelector('.small-preview.active')?.classList.remove('active'); this.classList.add('active')"
 		>
 			{content}
 		</a>
 	)
 }
 
-function tabs(styles: Style[], picked_style?: number) {
+function Thumbnails({
+	styles,
+	picked_style,
+	full_view,
+}: {
+	styles: Style[]
+	picked_style?: number
+	full_view: boolean
+}) {
 	return (
 		<nav>
 			<ul>
 				{styles.map((style) => (
 					<li class={{ active: picked_style == style.id }}>
-						{smallPreview({ ...style, active: picked_style == style.id })}
+						{smallPreview({
+							...style,
+							active: picked_style == style.id,
+							target_frame: full_view ? '_top' : 'editor',
+						})}
 					</li>
 				))}
 			</ul>
@@ -78,11 +91,39 @@ function tabs(styles: Style[], picked_style?: number) {
 	)
 }
 
+function Header() {
+	return (
+		<a class="header" href="/">
+			<img src="/logo.svg" width="173" height="56" />
+			<div class="title">
+				Cloudflare Zaraz
+				<br />
+				Consent Modal Designer
+			</div>
+		</a>
+	)
+}
+
+function Divider() {
+	return (
+		<div class="divider" data-controller="resizer">
+			<div class="dots">
+				.<br />.<br />.<br />
+			</div>
+		</div>
+	)
+}
+
 router.get('/', async (context) => {
 	const styles = await getStyles(context.env.DB)
 	return await HTMLResponse({
 		title: 'Zaraz CMP Style Gallery',
-		body: <div class="main-ui">{tabs(styles)}</div>,
+		body: (
+			<div class="main-ui main-ui--only-gallery">
+				<Header />
+				<Thumbnails styles={styles} full_view={true} />
+			</div>
+		),
 	})
 })
 
@@ -93,19 +134,19 @@ router.get('/:id', async (context) => {
 		title: 'Zaraz CMP Style Gallery',
 		body: (
 			<div class="main-ui">
-				<div class="header">
-					<img src="/logo.svg" width="173" height="56" />
-					<div class="title">
-						Cloudflare Zaraz
-						<br />
-						Consent Modal Designer
-					</div>
-				</div>
-				<turbo-frame id="preview-editor" class="">
+				<Header />
+				<turbo-frame id="editor" class="">
 					{editor(active_style?.css || '')}
-					{bigPreview(active_style?.css)}
 				</turbo-frame>
-				{tabs(styles, Number(context.params.id))}
+				{bigPreview(active_style?.css)}
+				<Divider />
+				<Thumbnails
+					{...{
+						styles,
+						picked_style: Number(context.params.id),
+						full_view: false,
+					}}
+				/>
 			</div>
 		),
 		activeCustomStyle: `.fake-consent-modal-container {${active_style?.css}}`,

@@ -6,16 +6,27 @@ export default function makeConsentModal(customStyle: string = '') {
 	return (
 		<>
 			<style>{`body {background-color: white;}`}</style>
-			<script>
-				{`window.onmessage = function(e) {
-				const data = JSON.parse(e.data);
-				console.log("Received new data");
-				if (data.type == 'new-style') {
-				console.log(document.getElementById("shadowroot").shadowRoot);
-	            document.getElementById("shadowroot").shadowRoot.querySelector("#customStyle").innerHTML = data.style
+
+			{
+				/* HTML */ `<script>
+					window.onmessage = function (e) {
+						const data = JSON.parse(e.data)
+						if (data.type == 'new-style') {
+							const shadowroot =
+								document.getElementById('shadowroot').shadowRoot
+							const animation_style = document.createElement('style')
+							animation_style.classList.add('transition')
+							animation_style.innerHTML = '* {transition: all 200ms;}'
+							shadowroot.appendChild(animation_style)
+							shadowroot.querySelector('#customStyle').innerHTML = data.style
+							setTimeout(() => {
+								animation_style.remove()
+							}, 200)
+						}
 					}
-				};`}
-			</script>
+				</script>`
+			}
+
 			<div>
 				<p>{placeholder()}</p>
 			</div>
