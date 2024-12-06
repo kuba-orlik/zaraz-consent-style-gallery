@@ -43,5 +43,6 @@ export class MonacoController extends Controller<HTMLDivElement> {
 		const style = this.editor?.getValue() || ''
 		this.contentTarget.innerHTML = style
 		console.log('SENT CHANGE')
+		this.previewOutlet.setStyle(style)
 	}
 }

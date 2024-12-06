@@ -88,7 +88,7 @@ iframe#preview {
 nav {
 	grid-area: gallery;
 	position: relative;
-	height: calc(100vh - 550px);
+	height: 100%;
 	padding: var(--outline-radius);
 	border-radius: var(--outline-radius);
 	overflow: hidden;
