@@ -4,7 +4,9 @@ main = "dist/index.js"
 compatibility_date = "2024-11-12"
 compatibility_flags = ["nodejs_compat"]
 assets = { directory = "./public", binding = "ASSETS", html_handling = "force-trailing-slash", not_found_handling = "404-page" }
-
+routes = [
+  { pattern = "consent-designs.zaraz.com", custom_domain = true }
+]
 
 # Workers Logs
 # Docs: https://developers.cloudflare.com/workers/observability/logs/workers-logs/
