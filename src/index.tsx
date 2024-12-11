@@ -116,14 +116,9 @@ function Divider() {
 
 router.get('/', async (context) => {
 	const styles = await getStyles(context.env.DB)
-	return await HTMLResponse({
-		title: 'Zaraz CMP Style Gallery',
-		body: (
-			<div class="main-ui main-ui--only-gallery">
-				<Header />
-				<Thumbnails styles={styles} full_view={true} />
-			</div>
-		),
+	return new Response('Redirecting...', {
+		status: 302,
+		headers: { Location: '/' + styles[0].id },
 	})
 })
 
