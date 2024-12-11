@@ -1,6 +1,6 @@
 import { Controller } from '@hotwired/stimulus'
 import type * as Monaco from 'monaco-editor'
-import type { CMPPreview } from './index.js'
+import type { CMPPreview } from './CMPPreview.js'
 
 export declare const require: any // this is the monaco loader's require function, not the UMD require
 export declare const monaco: { editor: typeof Monaco.editor }

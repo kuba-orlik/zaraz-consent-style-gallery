@@ -1,22 +1,25 @@
 import { Controller } from '@hotwired/stimulus'
 
 export class Resizer extends Controller<HTMLDivElement> {
+	static outlets = ['preview']
+	declare previewOutlet: CMPPreview
+
 	connect() {
 		this.element.addEventListener('mousedown', (e) => {
 			e.preventDefault()
 
-			function handleMove(e: MouseEvent) {
-				console.log('move!')
+			const handleMove = (e: MouseEvent) => {
 				const padding = 2 * 8
 				const new_width = document.documentElement.clientWidth - e.x - padding
 				document.body.style.setProperty('--preview-width', `${new_width}px`)
 				document.body.classList.add('dragging')
-				console.log(document.body.style)
+				this.previewOutlet.setPointerActive(false)
 			}
 
-			function clearHandlers(e: MouseEvent) {
+			const clearHandlers = (e: MouseEvent) => {
 				document.removeEventListener('mousemove', handleMove)
 				document.removeEventListener('mouseup', clearHandlers)
+				this.previewOutlet.setPointerActive(true)
 				document.body.classList.remove('dragging')
 			}
 

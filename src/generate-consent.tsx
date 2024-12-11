@@ -5,40 +5,79 @@ import { placeholder } from './front/placeholder-website'
 export default function makeConsentModal(customStyle: string = '') {
 	return (
 		<>
-			<style>{`body {background-color: white;}`}</style>
-
-			{
-				/* HTML */ `<script>
-					window.onmessage = function (e) {
-						const data = JSON.parse(e.data)
-						if (data.type == 'new-style') {
-							const shadowroot =
-								document.getElementById('shadowroot').shadowRoot
-							const animation_style = document.createElement('style')
-							animation_style.classList.add('transition')
-							animation_style.innerHTML = '* {transition: all 200ms;}'
-							shadowroot.appendChild(animation_style)
-							shadowroot.querySelector('#customStyle').innerHTML = data.style
-							setTimeout(() => {
-								animation_style.remove()
-							}, 200)
-						}
-					}
-				</script>`
-			}
-
-			<div>
-				<p>{placeholder()}</p>
-			</div>
+			<script src="/dist/frame.js"></script>
+			<div>{placeholder()}</div>
 			<div class="cf_modal_container" id="shadowroot">
 				<template shadowrootmode="open">
-					<style>{defaultStyles}</style>
-					<style id="customStyle">{customStyle}</style>
+					{
+						/* HTML */ `<style>
+							@layer consent, gallery-ui;
+							body {
+								background-color: white;
+							}
+
+							.has-hover:hover:not(:has(*:hover)) {
+								outline: 1px dashed blue;
+							}
+
+							dialog:not(:has(.has-hover)) {
+								.css-path {
+									opacity: 0;
+								}
+							}
+
+							@layer gallery-ui {
+								.css-path {
+									position: absolute;
+
+									left: 0;
+									pointer-events: none;
+									font-size: 10px;
+									background-color: #002b36;
+									padding: 8px 16px;
+									border: 1px solid #000000;
+									z-index: 99999999999999;
+									box-shadow: 1px 1px 6px -1px #00000073;
+									transition: all 100ms;
+									& > * {
+										color: #268bd2;
+										font-family:
+											Menlo,
+											Consolas,
+											Monaco,
+											Liberation Mono,
+											Lucida Console,
+											monospace;
+									}
+
+									& > .class {
+										color: #fdf6e3;
+									}
+
+									& > .element {
+										color: hsl(68 100% 41% / 1);
+										font-weight: bold;
+									}
+
+									& > .copied {
+										color: hsl(102 69% 60% / 1);
+									}
+
+									&:not(:has(*)) {
+										opacity: 0;
+									}
+								}
+							}
+						</style>`
+					}
+					<style>{`@layer consent { ${defaultStyles} }`}</style>
+					<style id="customStyle">{`@layer consent {${customStyle}}`}</style>
 					<dialog
 						class="cf_modal"
 						aria-modal="true"
 						aria-labelledby="cf_modal_title"
 					>
+						<div class="css-path"></div>
 						<div class="title_container">
 							<h2 id="cf_modal_title">Cookie Settings</h2>
 						</div>

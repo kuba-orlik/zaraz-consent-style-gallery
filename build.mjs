@@ -49,13 +49,25 @@ const frontend_config = {
 	outdir: 'public/dist',
 }
 
+const frame_config = {
+	bundle: true,
+	target: 'es2022',
+	platform: 'node',
+	format: 'iife',
+	entryPoints: ['src/front/frame.ts'],
+	outdir: 'public/dist',
+}
+
+const configs = [backend_config, frontend_config, frame_config]
+
 if (process.argv.includes('--watch')) {
-	const ctx_backend = await esbuild.context(backend_config)
-	await ctx_backend.watch()
-	const ctx_frontend = await esbuild.context(frontend_config)
-	await ctx_frontend.watch()
+	for (const config of configs) {
+		const ctx = await esbuild.context(config)
+		await ctx.watch()
+	}
 	console.log('watching...')
 } else {
-	await esbuild.build(backend_config)
-	await esbuild.build(frontend_config)
+	for (const config of configs) {
+		await esbuild.build(config)
+	}
 }

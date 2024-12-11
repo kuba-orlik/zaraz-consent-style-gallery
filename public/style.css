@@ -76,13 +76,16 @@ body {
 	}
 }
 
-iframe#preview {
+#preview {
 	grid-area: preview;
-	width: 100%;
-	height: 100%;
-	border: 1px solid var(--frame-border-color);
-	border-radius: 8px;
-	pointer-events: none;
+
+	&,
+	& > iframe {
+		width: 100%;
+		height: 100%;
+		border: 1px solid var(--frame-border-color);
+		border-radius: 8px;
+	}
 }
 
 nav {
@@ -122,10 +125,6 @@ nav {
 	background-color: white;
 	.monaco-editor {
 	}
-}
-
-#preview {
-	grid-column: 2/3;
 }
 
 .monaco-editor {

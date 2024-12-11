@@ -15,12 +15,15 @@ export interface Env {
 const router = new Router<Env>()
 
 async function bigPreview(css = '') {
-	return makeIframe(
-		{
-			id: 'preview',
-			'data-controller': 'preview',
-		},
-		await makeConsentModal(css),
+	return (
+		<div data-controller="preview" id="preview">
+			{makeIframe(
+				{
+					'data-preview-target': 'frame',
+				},
+				await makeConsentModal(css),
+			)}
+		</div>
 	)
 }
 
@@ -106,7 +109,11 @@ function Header() {
 
 function Divider() {
 	return (
-		<div class="divider" data-controller="resizer">
+		<div
+			class="divider"
+			data-controller="resizer"
+			data-resizer-preview-outlet="#preview"
+		>
 			<div class="dots">
 				.<br />.<br />.<br />
 			</div>
