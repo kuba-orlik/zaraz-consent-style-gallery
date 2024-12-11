@@ -82,7 +82,7 @@ export default function makeConsentModal(customStyle: string = '') {
 							<h2 id="cf_modal_title">Cookie Settings</h2>
 						</div>
 						<p class="cf_consent-intro">
-							This is our website and we use cookies on it. Read more in our
+							This is our website and we use cookies on it. Read more in our{' '}
 							<a href="#">Privacy Policy</a>
 						</p>
 						<hr />
