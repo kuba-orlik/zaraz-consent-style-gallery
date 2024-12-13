@@ -94,6 +94,7 @@ export default function makeConsentModal(customStyle: string = '') {
 										data-purpose-id="uDLu"
 										class="cf-checkbox"
 										id="checkbox-0"
+										checked
 									/>
 								</div>
 								<label for="checkbox-0">

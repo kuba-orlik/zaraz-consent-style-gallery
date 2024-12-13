@@ -23,8 +23,10 @@ function getHoveredElement(root: HTMLElement) {
 	return element
 }
 
+type PathSegment = { element?: string; class: string; modifiers?: string[] }
+
 function getHoveredPath(root: HTMLElement) {
-	const path: { element?: string; class: string }[] = []
+	const path: PathSegment[] = []
 	const hovered_element = getHoveredElement(root)
 	let element = hovered_element
 	if (!element) {
@@ -42,21 +44,32 @@ function getHoveredPath(root: HTMLElement) {
 		if (element.tagName == 'DIALOG') {
 			break
 		}
+		const segment: PathSegment = { class: classes }
 		if (
-			['DIV', 'BUTTON', 'INPUT', 'P'].includes(element.tagName) &&
-			classes != ''
+			!['DIV', 'BUTTON', 'INPUT', 'P'].includes(element.tagName) ||
+			classes == ''
 		) {
-			path.unshift({ class: classes })
-		} else {
-			path.unshift({ element: element.tagName.toLowerCase(), class: classes })
+			segment.element = element.tagName.toLowerCase()
 		}
+		if (element instanceof HTMLInputElement && element.checked) {
+			segment.modifiers = ['checked']
+		}
+		path.unshift(segment)
 		element = element.parentNode! as HTMLElement
 	}
+	console.log(path)
 	// document.dispatchEvent(new CustomEvent('css-path', { detail: { path } }))
 	window.parent.postMessage(JSON.stringify({ type: 'css-path-activate', path }))
 	const dialog: HTMLElement = root.querySelector('dialog')!
 	const csspathTarget: HTMLElement = root.querySelector('.css-path')!
-	csspathTarget.innerHTML = `${path.map(({ element, class: cls }) => `<span class="element">${element || ''}</span><span class="class">${cls}</span>`).join('<span> &gt; </span>')}`
+	const path_html = /* HTML */ `${path
+		.map(
+			({ element, class: cls, modifiers }) =>
+				`<span class="element">${element || ''}</span><span class="class">${cls}</span>${(modifiers || []).map((modifier) => /* HTML */ `<span class="modifier">:${modifier}</span>`)}`,
+		)
+		.join('<span> &gt; </span>')}`
+	console.log({ path_html })
+	csspathTarget.innerHTML = path_html
 
 	const dialogRect = dialog!.getBoundingClientRect()
 	const hoveredRect = hovered_element!.getBoundingClientRect()
@@ -70,7 +83,7 @@ function getHoveredPath(root: HTMLElement) {
 	)
 }
 
-window.addEventListener('load', (event) => {
+window.addEventListener('load', () => {
 	const shadowroot = document.getElementById('shadowroot')!
 		.shadowRoot as unknown as HTMLElement
 	if (!shadowroot) {
@@ -110,10 +123,11 @@ window.addEventListener('load', (event) => {
 	})
 })
 
-document.addEventListener('css-path', (event) => {
-	console.log(event)
-	const path_container = document.querySelector('.path-display')!
-	path_container.innerHTML(
-		`${(event.detail.path as string[]).map((segment) => `<span class="class">${segment}</span>`).join('<span>&gt;</span>')}`,
-	)
-})
+document.addEventListener(
+	'css-path',
+	(event: CustomEvent<{ path: PathSegment[] }>) => {
+		console.log(event)
+		const path_container = document.querySelector('.path-display')!
+		path_container.innerHTML = `${(event.detail.path as string[]).map((segment) => `<span class="class">${segment}</span>${segment.modifiers?.map((modifier) => `<span class="modifier">:${modifier}</span>`)}`).join('<span>&gt;</span>')}`
+	},
+)
