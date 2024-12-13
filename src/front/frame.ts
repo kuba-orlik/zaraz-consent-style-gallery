@@ -56,8 +56,10 @@ function getHoveredPath(root: HTMLElement) {
 		}
 		path.unshift(segment)
 		element = element.parentNode! as HTMLElement
+		if (segment.class) {
+			break // no need to create more precise selectors
+		}
 	}
-	console.log(path)
 	// document.dispatchEvent(new CustomEvent('css-path', { detail: { path } }))
 	window.parent.postMessage(JSON.stringify({ type: 'css-path-activate', path }))
 	const dialog: HTMLElement = root.querySelector('dialog')!
