@@ -1293,7 +1293,10 @@ function makeDialog(tcf: boolean, id: string) {
 					</div>
 					<label for="checkbox-0">
 						<h3>Behavior analysis</h3>
-						<p>Pomiar popularności elementów strony oraz jej intuicyjności.</p>
+						<p>
+							We use your data to measure the performance of different types of
+							content on our website
+						</p>
 					</label>
 				</li>
 				<li class="cf_consent-element">
