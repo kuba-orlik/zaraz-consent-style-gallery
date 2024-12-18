@@ -9,7 +9,10 @@ window.onmessage = function (e) {
 		animation_style.classList.add('transition')
 		animation_style.innerHTML = '* {transition: all 200ms;}'
 		shadowroot.appendChild(animation_style)
-		shadowroot.querySelector('#customStyle')!.innerHTML = data.style
+		shadowroot.querySelectorAll('.customStyle').forEach((style) => {
+			style.innerHTML = data.style
+			console.log('Setting style', data.style)
+		})
 		setTimeout(() => {
 			animation_style.remove()
 		}, 200)

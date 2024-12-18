@@ -20,7 +20,6 @@ export class MonacoController extends Controller<HTMLDivElement> {
 		css: string,
 		cursorOffset = 0,
 	): Promise<{ css: string; cursorOffset: number }> {
-		console.log(prettierPluginCSS)
 		const { formatted: newCss, newCursorOffset } =
 			await prettier.formatWithCursor(css, {
 				cursorOffset: 2,
@@ -51,14 +50,13 @@ export class MonacoController extends Controller<HTMLDivElement> {
 			this.editor.onDidChangeModelContent(() => {
 				this.sendNewStyle()
 			})
+			this.sendNewStyle()
 		})
-		this.sendNewStyle()
 	}
 
 	sendNewStyle() {
 		const style = this.editor?.getValue() || ''
 		this.contentTarget.innerHTML = style
-		console.log('SENT CHANGE')
 		this.previewOutlet.setStyle(style)
 	}
 }

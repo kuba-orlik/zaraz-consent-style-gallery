@@ -1406,7 +1406,7 @@ export default function makeConsentModal(customStyle: string = '') {
 						</style>`
 					}
 					{defaultStyles}
-					<style id="customStyle">{`@layer consent {${customStyle}}`}</style>
+					<style class="customStyle">{`@layer consent {${customStyle}}`}</style>
 					{makeDialog(false, 'dialog--regular')}
 					{makeDialog(true, 'dialog--tcf')}
 				</template>
