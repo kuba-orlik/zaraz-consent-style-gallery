@@ -20,6 +20,7 @@ async function bigPreview(css = '') {
 			{makeIframe(
 				{
 					'data-preview-target': 'frame',
+					'data-controller': 'preview-iframe',
 				},
 				await makeConsentModal(css),
 			)}
@@ -46,6 +47,7 @@ async function smallPreview({
 			<div style="width: calc(1024px / 4); height: calc(768px / 4)">
 				{makeIframe(
 					{
+						'data-controller': 'preview-iframe',
 						width: '1024',
 						height: '768',
 						style:
@@ -96,14 +98,25 @@ function Thumbnails({
 
 function Header() {
 	return (
-		<a class="header" href="/">
-			<img src="/logo.svg" width="173" height="56" />
-			<div class="title">
-				Cloudflare Zaraz
-				<br />
-				Consent Modal Designer
-			</div>
-		</a>
+		<div class="header">
+			<a class="header__inner" href="/">
+				<img src="/logo.svg" width="173" height="56" />
+				<div class="title">
+					Cloudflare Zaraz
+					<br />
+					Consent Modal Designer
+				</div>
+			</a>
+			<select
+				id="variant-picker"
+				name="variant"
+				data-controller="variant-picker"
+				data-variant-picker-preview-iframe-outlet="iframe"
+			>
+				<option value="regular">Regular, 2 purposes</option>
+				<option value="tcf">TCF</option>
+			</select>
+		</div>
 	)
 }
 

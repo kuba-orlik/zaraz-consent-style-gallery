@@ -1,10 +1,10 @@
 window.onmessage = function (e) {
 	const data = JSON.parse(e.data)
+	const shadowroot = document.getElementById('shadowroot')?.shadowRoot
+	if (!shadowroot) {
+		return
+	}
 	if (data.type == 'new-style') {
-		const shadowroot = document.getElementById('shadowroot')?.shadowRoot
-		if (!shadowroot) {
-			return
-		}
 		const animation_style = document.createElement('style')
 		animation_style.classList.add('transition')
 		animation_style.innerHTML = '* {transition: all 200ms;}'
@@ -13,6 +13,17 @@ window.onmessage = function (e) {
 		setTimeout(() => {
 			animation_style.remove()
 		}, 200)
+	}
+	if (data.type == 'variant-change') {
+		const variant = data.variant
+		document
+			.getElementById('shadowroot')
+			.shadowRoot.querySelectorAll(`dialog`)
+			.forEach((dialog) => dialog.close())
+		document
+			.getElementById('shadowroot')
+			.shadowRoot.querySelector(`#dialog--${variant}`)
+			.showModal()
 	}
 }
 
@@ -66,9 +77,8 @@ function getHoveredPath(root: HTMLElement) {
 		${path
 			.map(
 				({ element, class: cls, modifiers }) => /* HTML */ `
-					<span class="element">${element || ''}</span>
-					<span class="class">${cls}</span>
-					${(modifiers || []).map(
+					<span class="element">${element || ''}</span
+					><span class="class">${cls}</span>${(modifiers || []).map(
 						(modifier) =>
 							/* HTML */ `<span class="modifier">:${modifier}</span>`,
 					)}
@@ -120,9 +130,12 @@ window.addEventListener('load', () => {
 			const path_container = shadowroot.querySelector('.css-path')!
 			shadowroot.querySelectorAll('.copied').forEach((e) => e.remove())
 
-			const blob = new Blob([path_container.textContent || ''], {
-				type: 'text/plain',
-			})
+			const blob = new Blob(
+				[(path_container.textContent || '').replace(/[ \n\t]+/g, ' ').trim()],
+				{
+					type: 'text/plain',
+				},
+			)
 			const data = [new ClipboardItem({ ['text/plain']: blob })]
 			void navigator.clipboard.write(data)
 
@@ -135,12 +148,3 @@ window.addEventListener('load', () => {
 		})
 	})
 })
-
-document.addEventListener(
-	'css-path',
-	(event: CustomEvent<{ path: PathSegment[] }>) => {
-		console.log(event)
-		const path_container = document.querySelector('.path-display')!
-		path_container.innerHTML = `${(event.detail.path as string[]).map((segment) => `<span class="class">${segment}</span>${segment.modifiers?.map((modifier) => `<span class="modifier">:${modifier}</span>`)}`).join('<span>&gt;</span>')}`
-	},
-)

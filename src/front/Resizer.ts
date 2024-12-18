@@ -1,4 +1,5 @@
 import { Controller } from '@hotwired/stimulus'
+import type { CMPPreview } from './CMPPreview'
 
 export class Resizer extends Controller<HTMLDivElement> {
 	static outlets = ['preview']

@@ -63,16 +63,21 @@ body {
 .header {
 	grid-area: header;
 	display: flex;
-	flex-flow: row wrap;
-	align-items: flex-end;
-	gap: 8px;
-	text-decoration: none;
-	color: rgb(64 64 63);
-	font-weight: bold;
+	flex-flow: row;
 
-	.title {
-		position: relative;
-		bottom: -4px;
+	.header__inner {
+		display: flex;
+		flex-flow: row wrap;
+		align-items: flex-end;
+		gap: 8px;
+		text-decoration: none;
+		color: rgb(64 64 63);
+		font-weight: bold;
+
+		.title {
+			position: relative;
+			bottom: -4px;
+		}
 	}
 }
 
