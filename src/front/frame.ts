@@ -8,7 +8,7 @@ window.onmessage = function (e) {
 		const animation_style = document.createElement('style')
 		animation_style.classList.add('transition')
 		const stagger_step = 100
-		animation_style.innerHTML = `* {transition: all 200ms; transition-timing-function: ease-in-out; transition-delay: ${3 * stagger_step}ms;}
+		animation_style.innerHTML = `* {transition: all 200ms; transition-timing-function: cubic-bezier(0.64, 0.57, 0.67, 1.53); transition-delay: ${3 * stagger_step}ms;}
 			.cf_modal {transition-delay: ${0}ms}
 			.cf_modal > * {transition-delay: ${stagger_step * 1}ms}
 			.cf_modal > * > * {transition-delay: ${stagger_step * 2}ms}
