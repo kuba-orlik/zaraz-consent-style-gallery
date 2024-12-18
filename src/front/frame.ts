@@ -19,8 +19,10 @@ window.onmessage = function (e) {
 		document
 			.getElementById('shadowroot')
 			.shadowRoot.querySelectorAll(`dialog`)
-			.forEach((dialog) => dialog.close())
-		document
+			.forEach((dialog) => {
+				dialog.close()
+			})
+		const dialog = document
 			.getElementById('shadowroot')
 			.shadowRoot.querySelector(`#dialog--${variant}`)
 			.showModal()
@@ -68,11 +70,10 @@ function getHoveredPath(root: HTMLElement) {
 			break // no need to create more precise selectors
 		}
 	}
-	console.log(path)
-	// document.dispatchEvent(new CustomEvent('css-path', { detail: { path } }))
+
 	window.parent.postMessage(JSON.stringify({ type: 'css-path-activate', path }))
-	const dialog: HTMLElement = root.querySelector('dialog')!
-	const csspathTarget: HTMLElement = root.querySelector('.css-path')!
+	const dialog: HTMLElement = hovered_element.closest('dialog')
+	const csspathTarget: HTMLElement = dialog.querySelector('.css-path')!
 	const path_html = /* HTML */ `<div class="content">
 		${path
 			.map(

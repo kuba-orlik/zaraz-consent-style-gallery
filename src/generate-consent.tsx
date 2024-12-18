@@ -1411,7 +1411,7 @@ export default function makeConsentModal(customStyle: string = '') {
 					{makeDialog(true, 'dialog--tcf')}
 				</template>
 				<script>
-					document.getElementById("shadowroot").shadowRoot.querySelector("#dialog--regular").showModal()
+					document.getElementById("shadowroot").shadowRoot.querySelector("#dialog--regular").showModal();
 				</script>
 			</div>
 		</>
