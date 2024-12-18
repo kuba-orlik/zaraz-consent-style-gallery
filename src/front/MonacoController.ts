@@ -15,7 +15,7 @@ export class MonacoController extends Controller<HTMLDivElement> {
 	editor: ReturnType<typeof Monaco.editor.create> | null = null
 
 	connect() {
-		const content = this.contentTarget.innerHTML
+		const content = this.contentTarget.textContent
 		require.config({
 			paths: { vs: `${document.location.origin}/dist/vs` },
 		})
