@@ -1,4 +1,4 @@
-* {
+*:not(.monaco-editor, .monaco-editor *) {
 	box-sizing: border-box;
 	font-family:
 		-apple-system,
