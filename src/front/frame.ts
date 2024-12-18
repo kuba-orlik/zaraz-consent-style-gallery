@@ -7,15 +7,23 @@ window.onmessage = function (e) {
 	if (data.type == 'new-style') {
 		const animation_style = document.createElement('style')
 		animation_style.classList.add('transition')
-		animation_style.innerHTML =
-			'* {transition: all 200ms; transition-timing-function: ease-in-out;}'
+		const stagger_step = 60
+		animation_style.innerHTML = `* {transition: all 200ms; transition-timing-function: ease-in-out; transition-delay: ${3 * stagger_step}ms;}
+			.cf_modal {transition-delay: ${0}ms}
+			.cf_modal > * {transition-delay: ${stagger_step * 1}ms}
+			.cf_modal > * > * {transition-delay: ${stagger_step * 2}ms}
+			.cf_modal > * > * > * {transition-delay: ${stagger_step * 3}ms}
+			.cf_modal > * > * > * > * {transition-delay: ${stagger_step * 4}ms}
+			.cf_modal > * > * > * > * > * {transition-delay: ${stagger_step * 5}ms}
+			.cf_modal > * > * > * > * > * > * {transition-delay: ${stagger_step * 6}ms}
+`
 		shadowroot.appendChild(animation_style)
 		shadowroot.querySelectorAll('.customStyle').forEach((style) => {
 			style.innerHTML = data.style
 		})
 		setTimeout(() => {
 			animation_style.remove()
-		}, 200)
+		}, 400)
 	}
 	if (data.type == 'variant-change') {
 		const variant = data.variant
