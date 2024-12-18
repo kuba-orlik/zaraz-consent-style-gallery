@@ -130,7 +130,9 @@ window.addEventListener('load', () => {
 
 		element.addEventListener('click', (e: Event) => {
 			e.stopPropagation()
-			const path_container = shadowroot.querySelector('.css-path')!
+			const path_container = e.target
+				.closest('dialog')
+				.querySelector('.css-path')!
 			shadowroot.querySelectorAll('.copied').forEach((e) => e.remove())
 
 			const blob = new Blob(
