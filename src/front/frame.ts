@@ -7,7 +7,8 @@ window.onmessage = function (e) {
 	if (data.type == 'new-style') {
 		const animation_style = document.createElement('style')
 		animation_style.classList.add('transition')
-		animation_style.innerHTML = '* {transition: all 200ms;}'
+		animation_style.innerHTML =
+			'* {transition: all 200ms; transition-timing-function: ease-in-out;}'
 		shadowroot.appendChild(animation_style)
 		shadowroot.querySelectorAll('.customStyle').forEach((style) => {
 			style.innerHTML = data.style
