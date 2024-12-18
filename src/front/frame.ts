@@ -7,7 +7,7 @@ window.onmessage = function (e) {
 	if (data.type == 'new-style') {
 		const animation_style = document.createElement('style')
 		animation_style.classList.add('transition')
-		const stagger_step = 60
+		const stagger_step = 100
 		animation_style.innerHTML = `* {transition: all 200ms; transition-timing-function: ease-in-out; transition-delay: ${3 * stagger_step}ms;}
 			.cf_modal {transition-delay: ${0}ms}
 			.cf_modal > * {transition-delay: ${stagger_step * 1}ms}
@@ -23,7 +23,7 @@ window.onmessage = function (e) {
 		})
 		setTimeout(() => {
 			animation_style.remove()
-		}, 400)
+		}, 700)
 	}
 	if (data.type == 'variant-change') {
 		const variant = data.variant
