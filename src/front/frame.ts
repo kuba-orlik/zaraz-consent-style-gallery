@@ -41,9 +41,6 @@ function getHoveredPath(root: HTMLElement) {
 			.filter((e) => e != 'has-hover')
 			.map((e) => `.${e}`)
 			.join('')
-		if (element.tagName == 'DIALOG') {
-			break
-		}
 		const segment: PathSegment = { class: classes }
 		if (
 			!['DIV', 'BUTTON', 'INPUT', 'P'].includes(element.tagName) ||
@@ -60,29 +57,43 @@ function getHoveredPath(root: HTMLElement) {
 			break // no need to create more precise selectors
 		}
 	}
+	console.log(path)
 	// document.dispatchEvent(new CustomEvent('css-path', { detail: { path } }))
 	window.parent.postMessage(JSON.stringify({ type: 'css-path-activate', path }))
 	const dialog: HTMLElement = root.querySelector('dialog')!
 	const csspathTarget: HTMLElement = root.querySelector('.css-path')!
-	const path_html = /* HTML */ `${path
-		.map(
-			({ element, class: cls, modifiers }) =>
-				`<span class="element">${element || ''}</span><span class="class">${cls}</span>${(modifiers || []).map((modifier) => /* HTML */ `<span class="modifier">:${modifier}</span>`)}`,
-		)
-		.join('<span> &gt; </span>')}`
-	console.log({ path_html })
+	const path_html = /* HTML */ `<div class="content">
+		${path
+			.map(
+				({ element, class: cls, modifiers }) => /* HTML */ `
+					<span class="element">${element || ''}</span>
+					<span class="class">${cls}</span>
+					${(modifiers || []).map(
+						(modifier) =>
+							/* HTML */ `<span class="modifier">:${modifier}</span>`,
+					)}
+				`,
+			)
+			.join('<span> &gt; </span>')}
+	</div>`
 	csspathTarget.innerHTML = path_html
 
 	const dialogRect = dialog!.getBoundingClientRect()
 	const hoveredRect = hovered_element!.getBoundingClientRect()
-	csspathTarget.style.setProperty(
-		'bottom',
-		`${dialogRect.bottom - hoveredRect.top}px`,
-	)
-	csspathTarget.style.setProperty(
-		'left',
-		`${hoveredRect.x - dialog.getBoundingClientRect().x - 1}px`,
-	)
+	if (hovered_element == dialog) {
+		csspathTarget.style.setProperty('top', `${dialog.scrollTop}px`)
+		csspathTarget.style.setProperty('left', `${0}px`)
+		csspathTarget.style.removeProperty('bottom')
+	} else {
+		const bottomOffset = dialogRect.bottom - hoveredRect.top - dialog.scrollTop
+		const leftOffset = Math.min(
+			dialogRect.width - 170,
+			hoveredRect.x - dialog.getBoundingClientRect().x - 1,
+		)
+		csspathTarget.style.setProperty('bottom', `${bottomOffset}px`)
+		csspathTarget.style.removeProperty('top')
+		csspathTarget.style.setProperty('left', `${leftOffset}px`)
+	}
 }
 
 window.addEventListener('load', () => {
@@ -92,7 +103,7 @@ window.addEventListener('load', () => {
 		throw new Error('Shadowroot not found')
 	}
 
-	shadowroot.querySelectorAll('* > *').forEach((element) => {
+	shadowroot.querySelectorAll('dialog, * > *').forEach((element) => {
 		element.setAttribute('title', 'Click to copy CSS selector')
 		element.addEventListener('mouseenter', () => {
 			element.classList.add('has-hover') // the class is necessary to differentiate between actual hover and the fake hover given to checkboxes when you hover over their labels
