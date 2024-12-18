@@ -11,7 +11,6 @@ window.onmessage = function (e) {
 		shadowroot.appendChild(animation_style)
 		shadowroot.querySelectorAll('.customStyle').forEach((style) => {
 			style.innerHTML = data.style
-			console.log('Setting style', data.style)
 		})
 		setTimeout(() => {
 			animation_style.remove()
