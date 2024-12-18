@@ -27,6 +27,7 @@
 		"@hotwired/turbo": "^8.0.12",
 		"cloudworker-router": "^4.1.5",
 		"monaco-editor": "^0.52.0",
+		"prettier": "^3.4.2",
 		"tempstream": "^0.4.5"
 	}
 }
