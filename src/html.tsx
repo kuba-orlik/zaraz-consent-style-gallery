@@ -1,14 +1,11 @@
 import { tempstream } from 'tempstream'
-import { TempstreamJSX } from 'tempstream'
 
 export async function html({
 	title,
 	body,
-	activeCustomStyle = '',
 }: {
 	title: string
 	body: string | Promise<string>
-	activeCustomStyle?: string
 }): Promise<string> {
 	return tempstream/* HTML */ `<!doctype html>
 		<html>
@@ -23,14 +20,16 @@ export async function html({
 			<body>
 				${body}
 			</body>
-			<style id="custom-style">
-				${activeCustomStyle}
-			</style>
 			<script></script>
 		</html>`
 }
-export async function HTMLResponse(...args: Parameters<typeof html>) {
-	return new Response(await html(...args), {
+
+export async function HTMLResponse(
+	args: Parameters<typeof html>['0'],
+	status = 200,
+) {
+	return new Response(await html(args), {
 		headers: { 'Content-Type': 'text/html' },
+		status,
 	})
 }

@@ -1,7 +1,7 @@
 import { Router } from 'cloudworker-router'
 import { TempstreamJSX } from 'tempstream'
 import { HTMLResponse } from './html'
-import { getStyles, Style } from './styles.js'
+import { getStyles, Style, createStyle } from './styles.js'
 import makeConsentModal from './generate-consent'
 import makeIframe from './make-iframe'
 import { editor } from './editor'
@@ -142,30 +142,43 @@ router.get('/', async (context) => {
 	})
 })
 
-router.get('/:id', async (context) => {
+async function mainView(context, message = '') {
 	const styles = await getStyles(context.env.DB)
 	const active_style = styles.find((e) => e.id == Number(context.params.id))
-	return await HTMLResponse({
-		title: 'Zaraz CMP Style Gallery',
-		body: (
-			<div class="main-ui">
-				<Header />
-				<turbo-frame id="editor" class="">
-					{editor(active_style?.css || '')}
-				</turbo-frame>
-				{bigPreview(active_style?.css)}
-				<Divider />
-				<Thumbnails
-					{...{
-						styles,
-						picked_style: Number(context.params.id),
-						full_view: false,
-					}}
-				/>
-			</div>
-		),
-		activeCustomStyle: `.fake-consent-modal-container {${active_style?.css}}`,
-	})
+	return await HTMLResponse(
+		{
+			title: 'Zaraz CMP Style Gallery',
+			body: (
+				<div class="main-ui">
+					<Header />
+					{editor(active_style?.css || '', message)}
+					{bigPreview(active_style?.css)}
+					<Divider />
+					<Thumbnails
+						{...{
+							styles,
+							picked_style: Number(context.params.id),
+							full_view: false,
+						}}
+					/>
+				</div>
+			),
+		},
+		message == '' ? 200 : 422,
+	)
+}
+
+router.get('/:id', async (context) => {
+	return mainView(context)
+})
+
+router.post('/:id', async (context) => {
+	const formData = await context.request.formData()
+	const css = formData.get('style')
+	const author = formData.get('author')
+	const name = formData.get('name')
+	await createStyle(context.env.DB, { css, author, name })
+	return mainView(context, 'Submission saved and is awaiting review')
 })
 
 export default {

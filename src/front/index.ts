@@ -12,3 +12,8 @@ application.register('preview', CMPPreview)
 application.register('resizer', Resizer)
 application.register('preview-iframe', ConsentPreviewIFrameController)
 application.register('variant-picker', VariantPickerController)
+
+window.addEventListener('load', () => {
+	console.log('setup listener')
+	document.body.addEventListener('turbo:before-render', console.log)
+})

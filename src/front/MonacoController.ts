@@ -8,10 +8,11 @@ export declare const require: any // this is the monaco loader's require functio
 export declare const monaco: { editor: typeof Monaco.editor }
 
 export class MonacoController extends Controller<HTMLDivElement> {
-	static targets = ['content']
+	static targets = ['content', 'editor']
 	static outlets = ['preview']
 
 	declare contentTarget: HTMLTextAreaElement
+	declare editorTarget: HTMLDivElement
 	declare previewOutlet: CMPPreview
 
 	editor: ReturnType<typeof Monaco.editor.create> | null = null
@@ -36,7 +37,7 @@ export class MonacoController extends Controller<HTMLDivElement> {
 		})
 		this.contentTarget.style.setProperty('display', 'none')
 		require(['vs/editor/editor.main'], async () => {
-			this.editor = monaco.editor.create(this.element, {
+			this.editor = monaco.editor.create(this.editorTarget, {
 				value: (await this.format(content || '')).css,
 				language: 'css',
 				minimap: { enabled: false },
@@ -52,6 +53,17 @@ export class MonacoController extends Controller<HTMLDivElement> {
 			})
 			this.sendNewStyle()
 		})
+		const resizeObserver = new ResizeObserver((entries) => {
+			console.log('resize!')
+			for (const entry of entries) {
+				this.editorTarget.style.setProperty(
+					'height',
+					`${this.element.closest('#editor-container').getBoundingClientRect().height - document.getElementById('submit-form').getBoundingClientRect().height - 16}px`,
+				)
+			}
+		})
+
+		resizeObserver.observe(document.getElementById('submit-form'))
 	}
 
 	sendNewStyle() {
