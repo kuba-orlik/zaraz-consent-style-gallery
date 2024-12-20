@@ -15,6 +15,8 @@ export class MonacoController extends Controller<HTMLDivElement> {
 	declare editorTarget: HTMLDivElement
 	declare previewOutlet: CMPPreview
 
+	private resizeObserver: ResizeObserver
+
 	editor: ReturnType<typeof Monaco.editor.create> | null = null
 
 	async format(
@@ -53,8 +55,7 @@ export class MonacoController extends Controller<HTMLDivElement> {
 			})
 			this.sendNewStyle()
 		})
-		const resizeObserver = new ResizeObserver((entries) => {
-			console.log('resize!')
+		this.resizeObserver = new ResizeObserver((entries) => {
 			for (const entry of entries) {
 				this.editorTarget.style.setProperty(
 					'height',
@@ -63,12 +64,16 @@ export class MonacoController extends Controller<HTMLDivElement> {
 			}
 		})
 
-		resizeObserver.observe(document.getElementById('submit-form'))
+		this.resizeObserver.observe(document.getElementById('submit-form'))
 	}
 
 	sendNewStyle() {
 		const style = this.editor?.getValue() || ''
 		this.contentTarget.innerHTML = style
 		this.previewOutlet.setStyle(style)
+	}
+
+	disconnect() {
+		this.resizeObserver.unobserve(document.getElementById('submit-form'))
 	}
 }

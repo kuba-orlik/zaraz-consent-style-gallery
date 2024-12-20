@@ -107,15 +107,17 @@ function Header() {
 					Consent Modal Designer
 				</div>
 			</a>
-			<select
-				id="variant-picker"
-				name="variant"
-				data-controller="variant-picker"
-				data-variant-picker-preview-iframe-outlet="iframe"
-			>
-				<option value="regular">Regular, 2 purposes</option>
-				<option value="tcf">TCF</option>
-			</select>
+			<settings>
+				<select
+					id="variant-picker"
+					name="variant"
+					data-controller="variant-picker"
+					data-variant-picker-preview-iframe-outlet="iframe"
+				>
+					<option value="regular">Regular, 2 purposes</option>
+					<option value="tcf">TCF</option>
+				</select>
+			</settings>
 		</div>
 	)
 }

@@ -29,6 +29,8 @@ body {
 
 	--preview-width: 50vw;
 
+	--input-radius: 3px;
+
 	padding: 0;
 	margin: 0;
 	background-color: #e1e1e1;
@@ -43,7 +45,7 @@ body {
 	grid-template-columns: 1fr 8px var(--preview-width);
 	grid-template-rows: 60px 50% 1fr;
 	colunn-gap: 0;
-	row-gap: 8px;
+	row-gap: var(--main-padding);
 	padding: var(--main-padding);
 	height: 100vh;
 
@@ -64,11 +66,12 @@ body {
 	grid-area: header;
 	display: flex;
 	flex-flow: row;
+	gap: var(--main-padding);
 
 	.header__inner {
 		display: flex;
 		flex-flow: row wrap;
-		align-items: flex-end;
+		align-items: center;
 		gap: 8px;
 		text-decoration: none;
 		color: rgb(64 64 63);
@@ -78,6 +81,10 @@ body {
 			position: relative;
 			bottom: -4px;
 		}
+	}
+
+	settings {
+		align-self: center;
 	}
 }
 
@@ -208,13 +215,13 @@ nav {
 		flex-flow: row wrap;
 		gap: 8px;
 		justify-content: flex-end;
-		margin-top: 8px;
+		margin-top: var(--main-padding);
 	}
 
 	input {
-		border-radius: 3px;
+		border-radius: var(--input-radius);
 		font-size: 14px;
-		padding: 8px;
+		padding: var(--main-padding);
 	}
 
 	input[type='text'] {
@@ -235,8 +242,8 @@ nav {
 
 	.message {
 		border: 1px solid #0000006b;
-		border-radius: 3px;
-		padding: 8px;
+		border-radius: var(--input-radius);
+		padding: var(--main-padding);
 		background: hsl(27.45deg 90.6% 54.12%);
 		color: white;
 		font-style: italic;
@@ -248,4 +255,11 @@ nav {
 		animation: message 300ms;
 		max-width: max-content;
 	}
+}
+
+select {
+	border-radius: var(--input-radius);
+	background-color: white;
+	padding: var(--main-padding);
+	border: 1px solid black;
 }

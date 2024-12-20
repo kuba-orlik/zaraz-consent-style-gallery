@@ -139,6 +139,12 @@ window.addEventListener('load', () => {
 
 		element.addEventListener('click', (e: Event) => {
 			e.stopPropagation()
+			if (e.target.tagName == 'A') {
+				e.preventDefault()
+			}
+			if (element.tagName == 'BUTTON') {
+				setTimeout(() => element.closest('dialog').close(), 500)
+			}
 			const path_container = e.target
 				.closest('dialog')
 				.querySelector('.css-path')!
@@ -157,7 +163,7 @@ window.addEventListener('load', () => {
 			checkmark.classList.add('copied')
 			checkmark.textContent = '✔ Copied!'
 			path_container.appendChild(checkmark)
-			e.preventDefault()
+
 			return null
 		})
 	})
