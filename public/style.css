@@ -229,15 +229,8 @@ nav {
 	}
 
 	input[type='submit'] {
+		--button-walls-color: black;
 		background-color: #f48120;
-		color: white;
-		font-weight: bold;
-		border: 2px solid #ffc18e;
-		cursor: pointer;
-
-		&:hover {
-			filter: brightness(1.1);
-		}
 	}
 
 	.message {
@@ -267,31 +260,39 @@ select {
 settings {
 	button {
 		--button-walls-color: black;
-		background-color: white;
-		border: 1px solid var(--button-walls-color);
-		border-radius: 3px;
+	}
+}
+
+input[type='submit'],
+button {
+	background-color: white;
+	border: 1px solid var(--button-walls-color);
+	border-radius: 3px;
+	box-shadow:
+		1px 1px 0px var(--button-walls-color),
+		2px 2px 0px var(--button-walls-color);
+	position: relative;
+	left: -2px;
+	bottom: 2px;
+	padding: var(--main-padding);
+	cursor: pointer;
+	transition:
+		box-shadow 32ms,
+		left 32ms,
+		bottom 32ms;
+
+	&:hover {
 		box-shadow:
 			1px 1px 0px var(--button-walls-color),
-			2px 2px 0px var(--button-walls-color);
-		position: relative;
-		left: -2px;
-		bottom: 2px;
-		padding: var(--main-padding);
-		cursor: pointer;
+			2px 2px 0px var(--button-walls-color),
+			3px 3px 0px var(--button-walls-color);
+		left: -3px;
+		bottom: 3px;
+	}
 
-		&:hover {
-			box-shadow:
-				1px 1px 0px var(--button-walls-color),
-				2px 2px 0px var(--button-walls-color),
-				3px 3px 0px var(--button-walls-color);
-			left: -3px;
-			bottom: 3px;
-		}
-
-		&:active {
-			box-shadow: 1px 1px 0px var(--button-walls-color);
-			left: -1px;
-			bottom: 1px;
-		}
+	&:active {
+		box-shadow: 1px 1px 0px var(--button-walls-color);
+		left: -1px;
+		bottom: 1px;
 	}
 }
