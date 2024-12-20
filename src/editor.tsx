@@ -39,7 +39,7 @@ export function editor(content: string, message = '') {
 						Name for your design:{' '}
 						<input type="text" name="name" placeholder="Blueberry blue" />
 					</label>
-					<input type="submit" />
+					<input type="submit" value="Submit" />
 				</form>
 			</turbo-frame>
 		</div>
