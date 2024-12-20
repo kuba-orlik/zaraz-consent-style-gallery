@@ -32,10 +32,12 @@ export function editor(content: string, message = '') {
 				<div>{message}</div>
 				<form method="POST" id="submit-style-form">
 					<label>
-						Your nickname: <input type="text" name="author" />
+						Your nickname:{' '}
+						<input type="text" name="author" placeholder="couscous_eater68" />
 					</label>
 					<label>
-						Name for your design: <input type="text" name="name" />
+						Name for your design:{' '}
+						<input type="text" name="name" placeholder="Blueberry blue" />
 					</label>
 					<input type="submit" />
 				</form>
