@@ -178,7 +178,10 @@ router.post('/:id', async (context) => {
 	const author = formData.get('author')
 	const name = formData.get('name')
 	await createStyle(context.env.DB, { css, author, name })
-	return mainView(context, 'Submission saved and is awaiting review')
+	return mainView(
+		context,
+		"We've reveived your submission. We'll add it to the gallery when it passes our review process.",
+	)
 })
 
 export default {

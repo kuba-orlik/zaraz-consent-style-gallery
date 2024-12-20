@@ -29,7 +29,7 @@ export function editor(content: string, message = '') {
 				</div>
 			</turbo-frame>
 			<turbo-frame id="submit-form" refresh="morph">
-				<div>{message}</div>
+				{message ? <div class="message">{message}</div> : ''}
 				<form method="POST" id="submit-style-form">
 					<label>
 						Your nickname:{' '}

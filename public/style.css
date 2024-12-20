@@ -182,16 +182,70 @@ nav {
 	}
 }
 
+@keyframes message {
+	0% {
+		transform: scale(0);
+	}
+
+	90% {
+		transform: scale(1.1);
+	}
+
+	100% {
+		transform: scale(1);
+	}
+}
+
 #submit-form {
 	label {
 		display: block;
+		font-size: 14px;
 	}
 
 	form {
 		display: flex;
+		align-items: stretch;
 		flex-flow: row wrap;
 		gap: 8px;
 		justify-content: flex-end;
 		margin-top: 8px;
+	}
+
+	input {
+		border-radius: 3px;
+		font-size: 14px;
+		padding: 8px;
+	}
+
+	input[type='text'] {
+		border: 1px solid black;
+	}
+
+	input[type='submit'] {
+		background-color: #f48120;
+		color: white;
+		font-weight: bold;
+		border: 2px solid #ffc18e;
+		cursor: pointer;
+
+		&:hover {
+			filter: brightness(1.1);
+		}
+	}
+
+	.message {
+		border: 1px solid #0000006b;
+		border-radius: 3px;
+		padding: 8px;
+		background: hsl(27.45deg 90.6% 54.12%);
+		color: white;
+		font-style: italic;
+		font-size: 14px;
+		display: block;
+		margin: 0 auto;
+		width: auto;
+		box-shadow: 1px 1px 4px 0px #00000059;
+		animation: message 300ms;
+		max-width: max-content;
 	}
 }
