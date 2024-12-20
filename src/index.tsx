@@ -107,16 +107,18 @@ function Header() {
 					Consent Modal Designer
 				</div>
 			</a>
-			<settings>
+			<settings style="display: flex; gap: 8px;">
 				<select
 					id="variant-picker"
 					name="variant"
 					data-controller="variant-picker"
 					data-variant-picker-preview-iframe-outlet="iframe"
 				>
-					<option value="regular">Regular, 2 purposes</option>
+					<option value="regular">Regular</option>
 					<option value="tcf">TCF</option>
 				</select>
+				<button title="Add one purpose to the previews">Purposes++</button>
+				<button title="Remove one purpose from the previews">Purposes--</button>
 			</settings>
 		</div>
 	)
