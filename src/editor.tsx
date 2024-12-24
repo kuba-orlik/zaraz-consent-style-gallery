@@ -29,18 +29,44 @@ export function editor(content: string, message = '') {
 				</div>
 			</turbo-frame>
 			<turbo-frame id="submit-form" refresh="morph">
-				{message ? <div class="message">{message}</div> : ''}
-				<form method="POST" id="submit-style-form">
-					<label>
-						Your nickname:{' '}
-						<input type="text" name="author" placeholder="couscous_eater68" />
-					</label>
-					<label>
-						Name for your design:{' '}
-						<input type="text" name="name" placeholder="Blueberry blue" />
-					</label>
-					<input type="submit" value="Submit" />
-				</form>
+				<dialog>
+					<h3>Share your design</h3>
+					<p>
+						By sharing your design you confirm that you agree that it will be
+						published on this website and used by others freely.
+					</p>
+					{message ? <div class="message">{message}</div> : ''}
+					<form method="POST" id="submit-style-form">
+						<label>
+							Your nickname:{' '}
+							<input
+								required
+								type="text"
+								name="author"
+								placeholder="couscous_eater68"
+							/>
+						</label>
+						<label>
+							Name for your design:{' '}
+							<input
+								required
+								type="text"
+								name="name"
+								placeholder="Blueberry blue"
+							/>
+						</label>
+						<div>
+							<button
+								type="button"
+								class="special-button"
+								onclick="document.querySelector('#submit-form dialog').close()"
+							>
+								Close
+							</button>
+							<input type="submit" class="special-button" value="Submit" />
+						</div>
+					</form>
+				</dialog>
 			</turbo-frame>
 		</div>
 	)
