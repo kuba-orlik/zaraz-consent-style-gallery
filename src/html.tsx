@@ -12,6 +12,7 @@ export async function html({
 			<head>
 				<meta charset="utf-8" />
 				<title>${title}</title>
+				<link rel="icon" href="/logo.svg" />
 				<link rel="stylesheet" href="/style.css" />
 				<script src="/dist/turbo-umd.js"></script>
 				<script src="/dist/index.js"></script>
