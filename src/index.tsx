@@ -16,15 +16,36 @@ const router = new Router<Env>()
 
 async function bigPreview(css = '') {
 	return (
-		<div data-controller="preview" id="preview">
-			{makeIframe(
-				{
-					'data-preview-target': 'frame',
-					'data-controller': 'preview-iframe',
-				},
-				await makeConsentModal(css),
-			)}
-		</div>
+		<>
+			<div data-controller="preview" id="preview">
+				{makeIframe(
+					{
+						'data-preview-target': 'frame',
+						'data-controller': 'preview-iframe',
+					},
+					await makeConsentModal(css),
+				)}
+				<settings style="display: flex; gap: 8px;">
+					<label>
+						Mode
+						<select
+							id="variant-picker"
+							name="variant"
+							data-controller="variant-picker"
+							data-variant-picker-preview-iframe-outlet="iframe"
+						>
+							<option value="regular">Regular</option>
+							<option value="tcf">TCF Compatible</option>
+						</select>
+					</label>
+					<label>
+						Purposes
+						<input type="number" min="1" max="50" value="2" step="1" />
+					</label>
+					<button>Reload</button>
+				</settings>{' '}
+			</div>
+		</>
 	)
 }
 
@@ -43,8 +64,8 @@ async function smallPreview({
 }) {
 	const content = (
 		<>
-			<div style="margin-bottom: 8px;">{name}: </div>
-			<div style="width: calc(1024px / 4); height: calc(768px / 4)">
+			<h5>{name}</h5>
+			<div style="height: calc(768px / 4)">
 				{makeIframe(
 					{
 						'data-controller': 'preview-iframe',
@@ -100,26 +121,19 @@ function Header() {
 	return (
 		<div class="header">
 			<a class="header__inner" href="/">
-				<img src="/logo.svg" width="173" height="56" />
+				<img src="/logo.svg" width="56" height="56" />
 				<div class="title">
 					Cloudflare Zaraz
 					<br />
 					Consent Modal Designer
 				</div>
 			</a>
-			<settings style="display: flex; gap: 8px;">
-				<select
-					id="variant-picker"
-					name="variant"
-					data-controller="variant-picker"
-					data-variant-picker-preview-iframe-outlet="iframe"
-				>
-					<option value="regular">Regular</option>
-					<option value="tcf">TCF</option>
-				</select>
-				<button title="Add one purpose to the previews">Purposes++</button>
-				<button title="Remove one purpose from the previews">Purposes--</button>
-			</settings>
+			<button
+				onclick="document.querySelector('#submit-form dialog').showModal()"
+				class="special-button"
+			>
+				Share
+			</button>
 		</div>
 	)
 }
@@ -151,7 +165,7 @@ async function mainView(context, message = '') {
 	const active_style = styles.find((e) => e.id == Number(context.params.id))
 	return await HTMLResponse(
 		{
-			title: 'Zaraz CMP Style Gallery',
+			title: 'Zaraz Consent Designs',
 			body: (
 				<div class="main-ui">
 					<Header />

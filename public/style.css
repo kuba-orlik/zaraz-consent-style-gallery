@@ -76,11 +76,21 @@ body {
 		text-decoration: none;
 		color: rgb(64 64 63);
 		font-weight: bold;
+		flex-grow: 1;
 
 		.title {
 			position: relative;
 			bottom: -4px;
 		}
+	}
+
+	button {
+		--button-walls-color: black;
+		background-color: #f48120;
+		padding: 0 1rem;
+		height: 3rem;
+		margin-top: 0.5rem;
+		margin-right: 0.5rem;
 	}
 
 	settings {
@@ -90,13 +100,18 @@ body {
 
 #preview {
 	grid-area: preview;
+	display: flex;
+	flex-direction: column;
 
 	&,
 	& > iframe {
 		width: 100%;
-		height: 100%;
 		border: 1px solid var(--frame-border-color);
 		border-radius: 8px;
+	}
+
+	iframe {
+		flex-grow: 1;
 	}
 }
 
@@ -110,9 +125,8 @@ nav {
 	background-color: white;
 
 	ul {
-		display: flex;
-		align-content: flex-start;
-		flex-flow: row wrap;
+		display: grid;
+		justify-content: space-around;
 		overflow-x: hidden;
 		overflow-y: auto;
 		width: 100%;
@@ -121,6 +135,7 @@ nav {
 		padding: 16px;
 		margin: 0;
 		gap: 16px;
+		grid-template-columns: repeat(auto-fit, 256px);
 
 		li {
 			list-style: none;
@@ -147,24 +162,27 @@ nav {
 .small-preview {
 	position: relative;
 	display: block;
-	border: var(--outline-width) solid transparent;
+	border: var(--outline-width) solid #888;
 	border-radius: var(--outline-radius);
-	border-top-left-radius: 0;
-	border-top-right-radius: 0;
+	border-bottom-left-radius: 0;
+	border-bottom-right-radius: 0;
 	color: black;
 	text-decoration: none !important;
 	transition: all 100ms;
+	overflow: hidden;
 
 	&:hover {
 		transform: scale(1.05);
 	}
 
 	iframe {
-		border-color: var(--frame-border-color);
-		border-style: solid;
-		border-width: 4px;
-		border-radius: 16px;
+		border-width: 0px;
 		position: absolute;
+	}
+
+	h5 {
+		text-align: center;
+		margin: 0.5rem 0;
 	}
 }
 
@@ -203,18 +221,43 @@ nav {
 	}
 }
 
-#submit-form {
+#submit-form dialog[open]::backdrop {
+	background: rgba(0, 0, 0, 0.6);
+}
+
+#submit-form dialog {
+	position: absolute;
+	z-index: 10;
+	background: white;
+	margin: auto;
+	width: 30rem;
+	padding: 1rem;
+	border: 1px solid #333;
+	box-shadow:
+		1px 1px 0px black,
+		2px 2px 0px black;
+	border-radius: 3px;
+
 	label {
-		display: block;
+		display: flex;
 		font-size: 14px;
+	}
+
+	div {
+		display: block;
+		clear: both;
+		text-align: center;
+
+		input,
+		button {
+			margin: 1rem 1rem 0 1rem;
+		}
 	}
 
 	form {
 		display: flex;
-		align-items: stretch;
-		flex-flow: row wrap;
+		flex-direction: column;
 		gap: 8px;
-		justify-content: flex-end;
 		margin-top: var(--main-padding);
 	}
 
@@ -222,6 +265,11 @@ nav {
 		border-radius: var(--input-radius);
 		font-size: 14px;
 		padding: var(--main-padding);
+		margin-left: auto;
+	}
+
+	h3 {
+		margin-top: 0;
 	}
 
 	input[type='text'] {
@@ -250,30 +298,37 @@ nav {
 	}
 }
 
-select {
-	border-radius: var(--input-radius);
-	background-color: white;
-	padding: var(--main-padding);
-	border: 1px solid black;
-}
-
 settings {
+	margin-top: 5px;
+	label {
+		margin-right: 1rem;
+	}
+	select,
+	input,
 	button {
-		--button-walls-color: black;
+		margin-left: 0.5rem;
+		border: 1px solid transparent;
+		border-radius: 5px;
+		background: white;
+	}
+
+	button {
+		margin-left: auto;
 	}
 }
 
-input[type='submit'],
-button {
+.special-button {
 	background-color: white;
 	border: 1px solid var(--button-walls-color);
 	border-radius: 3px;
+
 	box-shadow:
 		1px 1px 0px var(--button-walls-color),
-		2px 2px 0px var(--button-walls-color);
+		2px 2px 0px var(--button-walls-color),
+		3px 3px 0px var(--button-walls-color);
+	left: -3px;
+	bottom: 3px;
 	position: relative;
-	left: -2px;
-	bottom: 2px;
 	padding: var(--main-padding);
 	cursor: pointer;
 	transition:
@@ -284,10 +339,10 @@ button {
 	&:hover {
 		box-shadow:
 			1px 1px 0px var(--button-walls-color),
-			2px 2px 0px var(--button-walls-color),
-			3px 3px 0px var(--button-walls-color);
-		left: -3px;
-		bottom: 3px;
+			2px 2px 0px var(--button-walls-color);
+		position: relative;
+		left: -2px;
+		bottom: 2px;
 	}
 
 	&:active {
