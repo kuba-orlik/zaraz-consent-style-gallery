@@ -35,8 +35,17 @@ export function editor(content: string, message = '') {
 						By sharing your design you confirm that you agree that it will be
 						published on this website and used by others freely.
 					</p>
-					{message ? <div class="message">{message}</div> : ''}
-					<form method="POST" id="submit-style-form">
+					{message ? (
+						<div class="message">
+							{message}
+							<script>
+								document.querySelector('#submit-form dialog').showModal()
+							</script>
+						</div>
+					) : (
+						''
+					)}
+					<form method="POST" action="/submit" id="submit-style-form">
 						<label>
 							Your nickname:{' '}
 							<input
