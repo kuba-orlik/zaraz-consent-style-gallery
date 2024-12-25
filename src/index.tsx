@@ -190,7 +190,7 @@ router.get('/:id', async (context) => {
 	return mainView(context)
 })
 
-router.post('/:id', async (context) => {
+router.post('/submit', async (context) => {
 	const formData = await context.request.formData()
 	const css = formData.get('style')
 	const author = formData.get('author')
