@@ -18,22 +18,16 @@
 
 body {
 	overflow: hidden;
-
 	--outline-width: 2px;
 	--outline-color: rgb(77, 137, 232);
 	--outline-radius: 8px;
-
 	--main-padding: 8px;
-
 	--frame-border-color: #d9d9d9;
-
 	--preview-width: 50vw;
-
 	--input-radius: 3px;
-
 	padding: 0;
 	margin: 0;
-	background-color: #e1e1e1;
+	background-color: #f2f2f2;
 }
 
 .main-ui {
@@ -70,8 +64,6 @@ body {
 
 	.header__inner {
 		display: flex;
-		flex-flow: row wrap;
-		align-items: center;
 		gap: 8px;
 		text-decoration: none;
 		color: rgb(64 64 63);
@@ -80,13 +72,13 @@ body {
 
 		.title {
 			position: relative;
-			bottom: -4px;
+			bottom: -6px;
 		}
 	}
 
 	button {
 		--button-walls-color: black;
-		background-color: #f48120;
+		background-color: #fbad41;
 		padding: 0 1rem;
 		height: 3rem;
 		margin-top: 0.5rem;
@@ -102,6 +94,7 @@ body {
 	grid-area: preview;
 	display: flex;
 	flex-direction: column;
+	overflow: hidden;
 
 	&,
 	& > iframe {
@@ -278,7 +271,7 @@ nav {
 
 	input[type='submit'] {
 		--button-walls-color: black;
-		background-color: #f48120;
+		background-color: #fbad41;
 	}
 
 	.message {
@@ -299,7 +292,8 @@ nav {
 }
 
 settings {
-	margin-top: 5px;
+	padding: 0.3rem 1rem;
+	background: white;
 	label {
 		margin-right: 1rem;
 	}
@@ -308,8 +302,12 @@ settings {
 	button {
 		margin-left: 0.5rem;
 		border: 1px solid transparent;
-		border-radius: 5px;
-		background: white;
+		background: #d9d9d9;
+		padding: 0 0.5rem;
+
+		&:hover {
+			background: #f2f2f2;
+		}
 	}
 
 	button {
