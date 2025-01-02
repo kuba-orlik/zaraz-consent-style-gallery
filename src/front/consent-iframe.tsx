@@ -12,4 +12,23 @@ export class ConsentPreviewIFrameController extends Controller<HTMLIFrameElement
 			'*',
 		)
 	}
+
+	incrementPurposes() {
+		console.log('Sending to frame!')
+		this.element.contentWindow?.postMessage(
+			JSON.stringify({
+				type: 'increment-purposes',
+			}),
+			'*',
+		)
+	}
+
+	decrementPurposes() {
+		this.element.contentWindow?.postMessage(
+			JSON.stringify({
+				type: 'decrement-purposes',
+			}),
+			'*',
+		)
+	}
 }

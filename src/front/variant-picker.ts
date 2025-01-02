@@ -1,10 +1,11 @@
 import { Controller } from '@hotwired/stimulus'
+import { ConsentPreviewIFrameController } from './consent-iframe.js'
 
 export class VariantPickerController extends Controller<HTMLSelectElement> {
 	static outlets = ['preview-iframe']
 
-	declare previewIframeOutlets: ConsentPReviewIFrameController[]
-	declare previewIframeOutlet: ConsentPReviewIFrameController
+	declare previewIframeOutlets: ConsentPreviewIFrameController[]
+	declare previewIframeOutlet: ConsentPreviewIFrameController
 
 	connect() {
 		this.element.addEventListener('change', () => {

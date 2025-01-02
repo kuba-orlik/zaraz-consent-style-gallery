@@ -7,7 +7,7 @@ window.onmessage = function (e) {
 	if (data.type == 'new-style') {
 		const animation_style = document.createElement('style')
 		animation_style.classList.add('transition')
-		const stagger_step = 100
+		// const stagger_step = 100
 		// 		animation_style.innerHTML = `* {transition: all 200ms; transition-timing-function: cubic-bezier(0.64, 0.57, 0.67, 1.53); transition-delay: ${3 * stagger_step}ms;}
 		// 			.cf_modal {transition-delay: ${0}ms}
 		// 			.cf_modal > * {transition-delay: ${stagger_step * 1}ms}
@@ -30,14 +30,34 @@ window.onmessage = function (e) {
 		const variant = data.variant
 		document
 			.getElementById('shadowroot')
-			.shadowRoot.querySelectorAll(`dialog`)
+			?.shadowRoot?.querySelectorAll(`dialog`)
 			.forEach((dialog) => {
 				dialog.close()
 			})
-		const dialog = document
+		document
 			.getElementById('shadowroot')
-			.shadowRoot.querySelector(`#dialog--${variant}`)
-			.showModal()
+			?.shadowRoot?.querySelector(`#dialog--${variant}`)
+			?.showModal()
+	}
+	console.log(data.type)
+	if (data.type == 'increment-purposes') {
+		console.log('INCREMENTING!!')
+		const list = document
+			.getElementById('shadowroot')
+			.shadowRoot.querySelector('ul')
+		const purpose = document
+			.getElementById('shadowroot')
+			.shadowRoot.querySelector('ul li:last-child')
+		const new_purpose = document.createElement('li')
+		new_purpose.classList.add('cf_consent-element')
+		new_purpose.innerHTML = purpose.innerHTML
+		list.appendChild(new_purpose)
+	}
+	if (data.type == 'decrement-purposes') {
+		const purpose = document
+			.getElementById('shadowroot')
+			.shadowRoot.querySelector('ul li:last-child:not(:first-child)')
+		purpose?.remove()
 	}
 }
 

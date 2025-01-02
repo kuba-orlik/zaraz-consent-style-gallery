@@ -117,8 +117,23 @@ function Header() {
 					<option value="regular">Regular</option>
 					<option value="tcf">TCF</option>
 				</select>
-				<button title="Add one purpose to the previews">Purposes++</button>
-				<button title="Remove one purpose from the previews">Purposes--</button>
+
+				<button
+					data-controller="purposes-amount-button"
+					data-purposes-amount-button-preview-iframe-outlet="iframe"
+					data-action="click->purposes-amount-button#decrement"
+					title="Remove one purpose from the previews"
+				>
+					Purposes--
+				</button>
+				<button
+					data-controller="purposes-amount-button"
+					data-purposes-amount-button-preview-iframe-outlet="iframe"
+					data-action="click->purposes-amount-button#increment"
+					title="Add one purpose to the previews"
+				>
+					Purposes++
+				</button>
 			</settings>
 		</div>
 	)
