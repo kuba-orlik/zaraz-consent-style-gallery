@@ -1,3 +1,70 @@
+function hideAllDialogs() {
+	document
+		.getElementById('shadowroot')
+		?.shadowRoot?.querySelectorAll(`dialog`)
+		.forEach((dialog) => {
+			dialog.close()
+		})
+}
+
+function showDialog(variant: string) {
+	document
+		.getElementById('shadowroot')
+		?.shadowRoot?.querySelector(`#dialog--${variant}`)
+		?.showModal()
+}
+
+function changeStyle(newStyle: string) {
+	const shadowroot = document.getElementById('shadowroot')?.shadowRoot
+	if (!shadowroot) {
+		return
+	}
+	const animation_style = document.createElement('style')
+	animation_style.classList.add('transition')
+	animation_style.innerHTML = `* {transition: all 200ms; transition-timing-function: cubic-bezier(0.64, 0.57, 0.67, 1.53);}`
+	shadowroot.appendChild(animation_style)
+	shadowroot.querySelectorAll('.customStyle').forEach((style) => {
+		style.innerHTML = newStyle
+	})
+	setTimeout(() => {
+		animation_style.remove()
+	}, 700)
+}
+
+function addPurpose() {
+	const dialogs = document
+		.getElementById('shadowroot')
+		.shadowRoot.querySelectorAll('dialog')
+	for (const dialog of dialogs) {
+		const list = dialog.querySelector('ul.cf_consent-container')
+		const purpose = dialog.querySelector(
+			'ul.cf_consent-container > li:last-child',
+		)
+		const new_purpose = document.createElement('li')
+		for (const class_name of purpose.classList) {
+			new_purpose.classList.add(class_name)
+		}
+		new_purpose.innerHTML = purpose.innerHTML
+		new_purpose
+			.querySelectorAll('*')
+			.forEach((e) => e.removeAttribute('events-set-up'))
+		list.appendChild(new_purpose)
+	}
+	setMouseEvents()
+}
+
+function removeLastPurpose() {
+	const dialogs = Array.from(
+		document.getElementById('shadowroot').shadowRoot.querySelectorAll('dialog'),
+	)
+	for (const dialog of dialogs) {
+		const purpose = dialog.querySelector(
+			'ul.cf_consent-container > li:last-child:not(:first-child)',
+		)
+		purpose?.remove()
+	}
+}
+
 window.onmessage = function (e) {
 	const data = JSON.parse(e.data)
 	const shadowroot = document.getElementById('shadowroot')?.shadowRoot
@@ -5,59 +72,18 @@ window.onmessage = function (e) {
 		return
 	}
 	if (data.type == 'new-style') {
-		const animation_style = document.createElement('style')
-		animation_style.classList.add('transition')
-		// const stagger_step = 100
-		// 		animation_style.innerHTML = `* {transition: all 200ms; transition-timing-function: cubic-bezier(0.64, 0.57, 0.67, 1.53); transition-delay: ${3 * stagger_step}ms;}
-		// 			.cf_modal {transition-delay: ${0}ms}
-		// 			.cf_modal > * {transition-delay: ${stagger_step * 1}ms}
-		// 			.cf_modal > * > * {transition-delay: ${stagger_step * 2}ms}
-		// 			.cf_modal > * > * > * {transition-delay: ${stagger_step * 3}ms}
-		// 			.cf_modal > * > * > * > * {transition-delay: ${stagger_step * 4}ms}
-		// 			.cf_modal > * > * > * > * > * {transition-delay: ${stagger_step * 5}ms}
-		// 			.cf_modal > * > * > * > * > * > * {transition-delay: ${stagger_step * 6}ms}
-		// `
-		animation_style.innerHTML = `* {transition: all 200ms; transition-timing-function: cubic-bezier(0.64, 0.57, 0.67, 1.53);}`
-		shadowroot.appendChild(animation_style)
-		shadowroot.querySelectorAll('.customStyle').forEach((style) => {
-			style.innerHTML = data.style
-		})
-		setTimeout(() => {
-			animation_style.remove()
-		}, 700)
+		changeStyle(data.style)
 	}
 	if (data.type == 'variant-change') {
 		const variant = data.variant
-		document
-			.getElementById('shadowroot')
-			?.shadowRoot?.querySelectorAll(`dialog`)
-			.forEach((dialog) => {
-				dialog.close()
-			})
-		document
-			.getElementById('shadowroot')
-			?.shadowRoot?.querySelector(`#dialog--${variant}`)
-			?.showModal()
+		hideAllDialogs()
+		showDialog(variant)
 	}
-	console.log(data.type)
 	if (data.type == 'increment-purposes') {
-		console.log('INCREMENTING!!')
-		const list = document
-			.getElementById('shadowroot')
-			.shadowRoot.querySelector('ul')
-		const purpose = document
-			.getElementById('shadowroot')
-			.shadowRoot.querySelector('ul li:last-child')
-		const new_purpose = document.createElement('li')
-		new_purpose.classList.add('cf_consent-element')
-		new_purpose.innerHTML = purpose.innerHTML
-		list.appendChild(new_purpose)
+		addPurpose()
 	}
 	if (data.type == 'decrement-purposes') {
-		const purpose = document
-			.getElementById('shadowroot')
-			.shadowRoot.querySelector('ul li:last-child:not(:first-child)')
-		purpose?.remove()
+		removeLastPurpose()
 	}
 }
 
@@ -139,53 +165,72 @@ function getHoveredPath(root: HTMLElement) {
 	}
 }
 
-window.addEventListener('load', () => {
+function setMouseEvents() {
 	const shadowroot = document.getElementById('shadowroot')!
 		.shadowRoot as unknown as HTMLElement
 	if (!shadowroot) {
 		throw new Error('Shadowroot not found')
 	}
 
-	shadowroot.querySelectorAll('dialog, * > *').forEach((element) => {
-		element.setAttribute('title', 'Click to copy CSS selector')
-		element.addEventListener('mouseenter', () => {
-			element.classList.add('has-hover') // the class is necessary to differentiate between actual hover and the fake hover given to checkboxes when you hover over their labels
-			getHoveredPath(shadowroot)
+	console.log(
+		'setting up mouse evnets again',
+		shadowroot.querySelectorAll(
+			'dialog:not([events-set-up=true]), * > *:not([events-set-up=true])',
+		),
+	)
+
+	shadowroot
+		.querySelectorAll(
+			'dialog:not([events-set-up=true]), * > *:not([events-set-up=true])',
+		)
+		.forEach((element) => {
+			element.setAttribute('title', 'Click to copy CSS selector')
+			element.addEventListener('mouseenter', () => {
+				element.classList.add('has-hover') // the class is necessary to differentiate between actual hover and the fake hover given to checkboxes when you hover over their labels
+				getHoveredPath(shadowroot)
+			})
+
+			element.addEventListener('mouseleave', () => {
+				element.classList.remove('has-hover')
+				getHoveredPath(shadowroot)
+			})
+
+			console.log('Setting mouse events for', element)
+
+			element.addEventListener('click', (e: Event) => {
+				e.stopPropagation()
+				if (e.target.tagName == 'A') {
+					e.preventDefault()
+				}
+				if (element.tagName == 'BUTTON') {
+					setTimeout(() => element.closest('dialog').close(), 500)
+				}
+				const path_container = e.target
+					.closest('dialog')
+					.querySelector('.css-path')!
+				shadowroot.querySelectorAll('.copied').forEach((e) => e.remove())
+
+				const blob = new Blob(
+					[(path_container.textContent || '').replace(/[ \n\t]+/g, ' ').trim()],
+					{
+						type: 'text/plain',
+					},
+				)
+				const data = [new ClipboardItem({ ['text/plain']: blob })]
+				void navigator.clipboard.write(data)
+
+				const checkmark = document.createElement('div')
+				checkmark.classList.add('copied')
+				checkmark.textContent = '✔ Copied!'
+				path_container.appendChild(checkmark)
+
+				return null
+			})
+
+			element.setAttribute('events-set-up', true)
 		})
+}
 
-		element.addEventListener('mouseleave', () => {
-			element.classList.remove('has-hover')
-			getHoveredPath(shadowroot)
-		})
-
-		element.addEventListener('click', (e: Event) => {
-			e.stopPropagation()
-			if (e.target.tagName == 'A') {
-				e.preventDefault()
-			}
-			if (element.tagName == 'BUTTON') {
-				setTimeout(() => element.closest('dialog').close(), 500)
-			}
-			const path_container = e.target
-				.closest('dialog')
-				.querySelector('.css-path')!
-			shadowroot.querySelectorAll('.copied').forEach((e) => e.remove())
-
-			const blob = new Blob(
-				[(path_container.textContent || '').replace(/[ \n\t]+/g, ' ').trim()],
-				{
-					type: 'text/plain',
-				},
-			)
-			const data = [new ClipboardItem({ ['text/plain']: blob })]
-			void navigator.clipboard.write(data)
-
-			const checkmark = document.createElement('div')
-			checkmark.classList.add('copied')
-			checkmark.textContent = '✔ Copied!'
-			path_container.appendChild(checkmark)
-
-			return null
-		})
-	})
+window.addEventListener('load', () => {
+	setMouseEvents()
 })

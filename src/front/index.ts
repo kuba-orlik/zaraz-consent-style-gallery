@@ -14,8 +14,3 @@ application.register('resizer', Resizer)
 application.register('preview-iframe', ConsentPreviewIFrameController)
 application.register('variant-picker', VariantPickerController)
 application.register('purposes-amount-button', PurposesAmountController)
-
-window.addEventListener('load', () => {
-	console.log('setup listener')
-	document.body.addEventListener('turbo:before-render', console.log)
-})

@@ -134,6 +134,13 @@ function Header() {
 				>
 					Purposes++
 				</button>
+				<button
+					data-controller="reload-button"
+					data-reload-button-preview-iframe-outlet="iframe"
+					data-action="click->reload"
+				>
+					Reload
+				</button>
 			</settings>
 		</div>
 	)
