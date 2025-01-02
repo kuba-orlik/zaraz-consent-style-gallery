@@ -137,7 +137,8 @@ function Header() {
 				<button
 					data-controller="reload-button"
 					data-reload-button-preview-iframe-outlet="iframe"
-					data-action="click->reload"
+					data-reload-button-variant-picker-outlet="#variant-picker"
+					data-action="reload-button#reload"
 				>
 					Reload
 				</button>

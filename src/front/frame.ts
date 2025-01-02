@@ -77,7 +77,9 @@ window.onmessage = function (e) {
 	if (data.type == 'variant-change') {
 		const variant = data.variant
 		hideAllDialogs()
-		showDialog(variant)
+		setTimeout(() => {
+			showDialog(variant)
+		}, 200)
 	}
 	if (data.type == 'increment-purposes') {
 		addPurpose()
@@ -172,13 +174,6 @@ function setMouseEvents() {
 		throw new Error('Shadowroot not found')
 	}
 
-	console.log(
-		'setting up mouse evnets again',
-		shadowroot.querySelectorAll(
-			'dialog:not([events-set-up=true]), * > *:not([events-set-up=true])',
-		),
-	)
-
 	shadowroot
 		.querySelectorAll(
 			'dialog:not([events-set-up=true]), * > *:not([events-set-up=true])',
@@ -194,8 +189,6 @@ function setMouseEvents() {
 				element.classList.remove('has-hover')
 				getHoveredPath(shadowroot)
 			})
-
-			console.log('Setting mouse events for', element)
 
 			element.addEventListener('click', (e: Event) => {
 				e.stopPropagation()
