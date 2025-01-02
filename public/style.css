@@ -71,8 +71,7 @@ body {
 		flex-grow: 1;
 
 		.title {
-			position: relative;
-			bottom: -6px;
+			align-self: center;
 		}
 	}
 
@@ -100,7 +99,7 @@ body {
 	& > iframe {
 		width: 100%;
 		border: 1px solid var(--frame-border-color);
-		border-radius: 8px;
+		border-radius: var(--outline-radius) 0px;
 	}
 
 	iframe {
@@ -155,7 +154,7 @@ nav {
 .small-preview {
 	position: relative;
 	display: block;
-	border: var(--outline-width) solid #888;
+	border: var(--outline-width) solid #ddd;
 	border-radius: var(--outline-radius);
 	border-bottom-left-radius: 0;
 	border-bottom-right-radius: 0;

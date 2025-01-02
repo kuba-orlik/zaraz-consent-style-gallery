@@ -38,11 +38,30 @@ async function bigPreview(css = '') {
 							<option value="tcf">TCF Compatible</option>
 						</select>
 					</label>
-					<label>
-						Purposes
-						<input type="number" min="1" max="50" value="2" step="1" />
-					</label>
-					<button>Reload</button>
+					<button
+						data-controller="purposes-amount-button"
+						data-purposes-amount-button-preview-iframe-outlet="iframe"
+						data-action="click->purposes-amount-button#decrement"
+						title="Remove one purpose from the previews"
+					>
+						Purposes--
+					</button>
+					<button
+						data-controller="purposes-amount-button"
+						data-purposes-amount-button-preview-iframe-outlet="iframe"
+						data-action="click->purposes-amount-button#increment"
+						title="Add one purpose to the previews"
+					>
+						Purposes++
+					</button>
+					<button
+						data-controller="reload-button"
+						data-reload-button-preview-iframe-outlet="#preview iframe"
+						data-reload-button-variant-picker-outlet="#variant-picker"
+						data-action="reload-button#reload"
+					>
+						Reload
+					</button>
 				</settings>{' '}
 			</div>
 		</>
