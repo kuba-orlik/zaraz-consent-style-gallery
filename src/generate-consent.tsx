@@ -775,7 +775,7 @@ function makeDialog(tcf: boolean, id: string) {
 						id="cf_consent-buttons__view-partners"
 						class="cf_consent-vendorlist-button"
 					>
-						View bla bla (4)
+						View all partners (4)
 					</button>
 				</div>
 				<div id="cf_modal_vendors" style="display: none;">
