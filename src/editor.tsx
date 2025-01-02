@@ -33,11 +33,21 @@ export function editor(content: string, message = '') {
 				<form method="POST" id="submit-style-form">
 					<label>
 						Your nickname:{' '}
-						<input type="text" name="author" placeholder="couscous_eater68" />
+						<input
+							type="text"
+							name="author"
+							placeholder="couscous_eater68"
+							required
+						/>
 					</label>
 					<label>
 						Name for your design:{' '}
-						<input type="text" name="name" placeholder="Blueberry blue" />
+						<input
+							type="text"
+							name="name"
+							placeholder="Blueberry blue"
+							required
+						/>
 					</label>
 					<input type="submit" value="Submit" />
 				</form>
